@@ -30,4 +30,6 @@
   background-color: #333;
   align-items: center;
   margin-right: 250px;
+  width: fit-content;
+  max-height: px;
 }

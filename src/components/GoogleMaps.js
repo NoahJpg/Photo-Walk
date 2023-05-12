@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { Autocomplete } from '@react-google-maps/api';
 import "../styles/GoogleMaps.css"
+import RandomLocationGenerator from './RandomLocation';
 
 class MapContainer extends Component {  
   constructor(props) {
@@ -31,33 +32,33 @@ class MapContainer extends Component {
     this.setState({ fadeOut: true });
   }
 
-  handleGeolocate() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const lat = position.coords.latitude;
-          const lng = position.coords.longitude;
-          const newMarker = {
-            lat: lat,
-            lng: lng,
-          };
-          this.setState({
-            markers: [newMarker],
-            lat: lat,
-            lng: lng,
-            isMarkerClicked: true,
-            selectedPlace: {},
-          });
-          this.getAddressFromLatLong(lat, lng);
-        },
-        () => {
-          alert('Could not get your location.');
-        }
-      );
-    } else {
-      alert('Geolocation is not supported by this browser.');
-    }
-  }
+  // handleGeolocate() {
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(
+  //       (position) => {
+  //         const lat = position.coords.latitude;
+  //         const lng = position.coords.longitude;
+  //         const newMarker = {
+  //           lat: lat,
+  //           lng: lng,
+  //         };
+  //         this.setState({
+  //           markers: [newMarker],
+  //           lat: lat,
+  //           lng: lng,
+  //           isMarkerClicked: true,
+  //           selectedPlace: {},
+  //         });
+  //         this.getAddressFromLatLong(lat, lng);
+  //       },
+  //       () => {
+  //         alert('Could not get your location.');
+  //       }
+  //     );
+  //   } else {
+  //     alert('Geolocation is not supported by this browser.');
+  //   }
+  // }
 
   onMapClick = (mapProps, map, clickEvent) => {
     const newMarker = {
@@ -83,6 +84,7 @@ class MapContainer extends Component {
       selectedPlace: { props: { index}},
     });
     this.deleteMarker();
+
   
   }
  
@@ -163,7 +165,7 @@ class MapContainer extends Component {
           mapContainerClassName="map-container"
           onClick={this.onMapClick}
           ref={this.mapRef}>
-            
+          
           {markers.map((marker, index) => (
             <Marker 
               key={index} 
@@ -172,6 +174,8 @@ class MapContainer extends Component {
               index={index}>          
             </Marker>
           ))}
+          <RandomLocationGenerator map={this.mapRef.current} />
+
           <div className='autocompleteContainer'>
             <Autocomplete
               onLoad={(autocomplete) => this.autocomplete = autocomplete}
