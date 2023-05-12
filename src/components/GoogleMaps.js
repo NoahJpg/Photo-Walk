@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { Autocomplete } from '@react-google-maps/api';
+import "../styles/GoogleMaps.css"
 
 class MapContainer extends Component {  
   constructor(props) {
@@ -16,8 +17,6 @@ class MapContainer extends Component {
       selectedPlace: { props: {} },
       isMarkerClicked: false,
       place: null,
-      showSplash: true,
-      fadeOut: false,
     };
     this.mapRef = React.createRef();
 
@@ -26,12 +25,10 @@ class MapContainer extends Component {
 
   componentDidMount() {
     this.setState({ mapMounted: true})
-    this.setState({ showSplash: true });
   }
 
   handleClick = () => {
     this.setState({ fadeOut: true });
-    this.setState({ showSplash: false })
   }
 
   handleGeolocate() {
@@ -99,7 +96,6 @@ class MapContainer extends Component {
     }
   }
 
-
   getAddressFromLatLong = async (lat, lng) => {
     const apiKey = process.env.REACT_APP_GMAP_KEY
     const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
@@ -152,7 +148,6 @@ class MapContainer extends Component {
     const { google } = this.props;
     const { markers, mapMounted } = this.state;
 
-
     if (!mapMounted) {
       return "Loading...";
     }
@@ -175,17 +170,18 @@ class MapContainer extends Component {
               index={index}>          
             </Marker>
           ))}
-
-          <Autocomplete
-            onLoad={(autocomplete) => this.autocomplete = autocomplete}
-            onPlaceChanged={() => this.onPlaceChanged(this.autocomplete)}
-          >
-            <input
-              type="text"
-              placeholder="Enter an address or click on the map"
-              className="search-input"
-            />
-          </Autocomplete>
+          <div className='autocompleteContainer'>
+            <Autocomplete
+              onLoad={(autocomplete) => this.autocomplete = autocomplete}
+              onPlaceChanged={() => this.onPlaceChanged(this.autocomplete)}
+            >
+              <input
+                type="text"
+                placeholder="Enter an address"
+                className="search-input"
+              />
+            </Autocomplete>
+          </div>
         </Map>
 
        </div>

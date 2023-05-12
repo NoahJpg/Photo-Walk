@@ -1,0 +1,22 @@
+.autocompleteContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.search-input {
+  z-index: 1;
+  position: relative;
+  top: 20px;
+  height: 3vw;
+  width: 15vw;
+}
+
+
+@media (max-width: 768px) {
+  .search-input {
+    height: 40px;
+    width: 100%;
+    max-width: 300px;
+    top: 55px;
+  }
+}
