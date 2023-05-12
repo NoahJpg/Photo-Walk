@@ -30,7 +30,7 @@ const Geocoding = ({ lat, lng }) => {
       {address ? (
         <p>Address: {address}</p>
       ) : (
-        <p>Loading address...</p>
+        <p></p>
       )}
     </div>
   );

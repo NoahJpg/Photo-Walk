@@ -5,7 +5,6 @@ import UserLocation from './UserLocation';
 
 const Header = () => {
   const handleLocationButtonClick = (location) => {
-    // Handle the button click logic here
     console.log(location)
   };
 
