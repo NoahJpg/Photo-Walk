@@ -25,3 +25,9 @@
 .nav-link:hover {
   text-decoration: underline;
 }
+
+.locationButton {
+  background-color: #333;
+  align-items: center;
+  margin-right: 250px;
+}

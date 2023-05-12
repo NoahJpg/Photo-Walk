@@ -73,6 +73,7 @@ class MapContainer extends Component {
     });
 
     this.getAddressFromLatLong(newMarker.lat, newMarker.lng);
+    
   };
 
   onMarkerClick = (index) => {
@@ -81,7 +82,8 @@ class MapContainer extends Component {
       activeMarker: marker,
       selectedPlace: { props: { index}},
     });
-    this.deleteMarker()
+    this.deleteMarker();
+  
   }
  
   deleteMarker = () => {

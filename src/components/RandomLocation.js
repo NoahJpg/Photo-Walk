@@ -20,6 +20,25 @@ const getUserLocation = () => {
   });
 };
 
+const getRandomLocation = () => {
+  const getRandomLat = () => {
+    const min = -90;
+    const max = 90;
+    return Math.random() * (max - min) + min;
+  }
+
+  const getRandomLng = () => {
+    const min = -180;
+    const max = 180;
+    return Math.random() * (max - min) + min;
+  }
+
+  const lat = getRandomLat();
+  const lng = getRandomLng();
+
+  return { lat, lng };
+};
+
 const RandomLocationApp = () => {
   const [currentLocation, setCurrentLocation] = useState(null);
   const [randomLocation, setRandomLocation] = useState(null);
@@ -32,9 +51,27 @@ const RandomLocationApp = () => {
       .catch((error) => {
         console.error("Error fetching user location:", error);
       });
+
+    const location = getRandomLocation();
+    setRandomLocation(location);
   }, []);
 
-
+  return (
+    <LoadScript googleMapsApiKey={REACT_APP_GMAP_KE}>
+      <GoogleMap
+        center={currentLocation}
+        zoom={12}
+        mapContainerStyle={{ width: "100%", height: "400px" }}
+      >
+        {currentLocation && (
+          <Marker position={currentLocation} label="Current Location" />
+        )}
+        {randomLocation && (
+          <Marker position={randomLocation} label="Random Location" />
+        )}
+      </GoogleMap>
+    </LoadScript>
+  );
 };
 
 export default RandomLocationApp;
