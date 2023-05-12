@@ -3,6 +3,7 @@ import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 import { Autocomplete } from '@react-google-maps/api';
 import "../styles/GoogleMaps.css"
 import RandomLocationGenerator from './RandomLocation';
+import Geocoding from './Geocoding';
 
 class MapContainer extends Component {  
   constructor(props) {
@@ -32,34 +33,6 @@ class MapContainer extends Component {
     this.setState({ fadeOut: true });
   }
 
-  // handleGeolocate() {
-  //   if (navigator.geolocation) {
-  //     navigator.geolocation.getCurrentPosition(
-  //       (position) => {
-  //         const lat = position.coords.latitude;
-  //         const lng = position.coords.longitude;
-  //         const newMarker = {
-  //           lat: lat,
-  //           lng: lng,
-  //         };
-  //         this.setState({
-  //           markers: [newMarker],
-  //           lat: lat,
-  //           lng: lng,
-  //           isMarkerClicked: true,
-  //           selectedPlace: {},
-  //         });
-  //         this.getAddressFromLatLong(lat, lng);
-  //       },
-  //       () => {
-  //         alert('Could not get your location.');
-  //       }
-  //     );
-  //   } else {
-  //     alert('Geolocation is not supported by this browser.');
-  //   }
-  // }
-
   onMapClick = (mapProps, map, clickEvent) => {
     const newMarker = {
       lat: clickEvent.latLng.lat(),
@@ -73,7 +46,7 @@ class MapContainer extends Component {
       selectedPlace: {}
     });
 
-    this.getAddressFromLatLong(newMarker.lat, newMarker.lng);
+    // this.getAddressFromLatLong(newMarker.lat, newMarker.lng);
     
   };
 
@@ -99,22 +72,6 @@ class MapContainer extends Component {
       });
     }
   }
-
-  getAddressFromLatLong = async (lat, lng) => {
-    const apiKey = process.env.REACT_APP_GMAP_KEY
-    const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${apiKey}`;
-
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      if (data.results.length > 0) {
-        const address = data.results[0].formatted_address;
-        this.setState({ address }, () => {});
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   onPlaceChanged = (autocomplete) => {
     if (autocomplete) {
@@ -148,49 +105,43 @@ class MapContainer extends Component {
     }
   };
 
+  
   render() {
     const { google } = this.props;
-    const { markers, mapMounted } = this.state;
+    const { markers, mapMounted, lat, lng } = this.state;
 
     if (!mapMounted) {
       return "Loading...";
     }
 
     return (
-      <div className='map-wrapper'>
-        <Map
-          google={google}
-          zoom={4}
-          initialCenter={{ lat: 37.0902, lng: -95.7129 }}
-          mapContainerClassName="map-container"
-          onClick={this.onMapClick}
-          ref={this.mapRef}>
-          
-          {markers.map((marker, index) => (
-            <Marker 
-              key={index} 
-              position={{lat: marker.lat, lng: marker.lng}} 
-              onClick={() => this.onMarkerClick(index)}
-              index={index}>          
-            </Marker>
-          ))}
-          <RandomLocationGenerator map={this.mapRef.current} />
-
-          <div className='autocompleteContainer'>
-            <Autocomplete
-              onLoad={(autocomplete) => this.autocomplete = autocomplete}
-              onPlaceChanged={() => this.onPlaceChanged(this.autocomplete)}
-            >
-              <input
-                type="text"
-                placeholder="Enter an address"
-                className="search-input"
+      <div className="map-wrapper">
+        <div className="map-container">
+          <Map
+            google={google}
+            zoom={4}
+            initialCenter={{ lat: 37.0902, lng: -95.7129 }}
+            containerStyle={{
+              width: "100%",
+              height: "100%",
+              position: "absolute",
+            }}
+            onClick={this.onMapClick}
+            ref={this.mapRef}
+          >
+            {markers.map((marker, index) => (
+              <Marker
+                key={index}
+                position={{ lat: marker.lat, lng: marker.lng }}
+                onClick={() => this.onMarkerClick(index)}
+                index={index}
               />
-            </Autocomplete>
-          </div>
-        </Map>
-
-       </div>
+            ))}
+            <RandomLocationGenerator map={this.mapRef.current} />
+          </Map>
+        </div>
+        <Geocoding lat={lat} lng={lng} />
+      </div>
     );
   }
 }
