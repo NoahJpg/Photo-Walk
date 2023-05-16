@@ -90,6 +90,7 @@ const RandomLocationGenerator = ({ map }) => {
         <p>
           Random Location: {randomLocation.lat}, {randomLocation.lng}
         </p>
+        
       )}
     </div>
   );
