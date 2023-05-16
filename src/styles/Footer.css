@@ -40,8 +40,8 @@ body {
   text-decoration: underline;
 }
 
-/* Mobile Styles */
 @media (max-width: 768px) {
+  /* Mobile Styles */
   .footer {
     font-size: 14px;
   }
