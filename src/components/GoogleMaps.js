@@ -5,6 +5,8 @@ import "../styles/GoogleMaps.css";
 import Geocoding from './Geocoding';
 import RandomLocationGenerator from './RandomLocation';
 import UserLocation from './UserLocation';
+import ImageUpload from './UploadPhoto';
+import ImageUploadWithGooglePhotos from './UploadGooglePhoto';
 
 const MapContainer = ({ google, apiKey }) => {
   const [markers, setMarkers] = useState([]);
@@ -92,6 +94,10 @@ const MapContainer = ({ google, apiKey }) => {
       </div>
       <div className='locationButton'>
         <UserLocation onLocationButtonClick={handleLocationButtonClick} />
+      </div>
+      <div className='locationButton'>
+        <ImageUpload />
+        <ImageUploadWithGooglePhotos />
       </div>
       <Geocoding lat={lat} lng={lng} />
     </div>

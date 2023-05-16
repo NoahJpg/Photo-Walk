@@ -32,20 +32,19 @@ const UserLocation = ({ onLocationButtonClick }) => {
   }, []);
 
   const handleLocationButtonClick = () => {
-    if (currentLocation) {
+    if (currentLocation && currentLocation.lat && currentLocation.lng) {
       onLocationButtonClick(currentLocation);
     }
-  }
+  };
 
   return (
     <div>
       <button onClick={handleLocationButtonClick}>Find Your Location</button>
-        {currentLocation && (
-          <p>
-            Current Location: {currentLocation.lat}, {currentLocation.lng}
-          </p>
-        )}
-        
+      {currentLocation && currentLocation.lat && currentLocation.lng && (
+        <p>
+          Current Location: {currentLocation.lat}, {currentLocation.lng}
+        </p>
+      )}
     </div>
   );
 };
